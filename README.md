@@ -25,5 +25,5 @@ python manage.py runserver
 ## ✒️ Autores
 
 * **Filipe** - *Desenvolvedor* - [filipe](https://github.com/FilipeNeiva)
-* **Victoria** - *Desenvolvedor* - [victoria](https://github.com/V4TORI)
+* **Victória** - *Desenvolvedora* - [victória](https://github.com/V4TORI)
 
