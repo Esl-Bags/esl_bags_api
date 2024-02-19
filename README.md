@@ -10,7 +10,7 @@ De que coisas você precisa para instalar o software e como instalá-lo?
 
 ```
 pip install django
-pip install django-rest-framework
+pip install djangorestframework
 ```
 
 ### 🔧 Instalação
