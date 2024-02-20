@@ -66,6 +66,7 @@ class Acquisition(models.Model):
 class Item(models.Model):
     product = models.ForeignKey('Product', on_delete=models.CASCADE)
     acquisition = models.ForeignKey('Acquisition', related_name='items', on_delete=models.CASCADE)
+    price = models.FloatField()
 
 
 class Car(models.Model):
