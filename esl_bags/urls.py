@@ -1,8 +1,5 @@
 from django.urls import include, path
-from rest_framework.generics import CreateAPIView, RetrieveUpdateAPIView
 from rest_framework.authtoken import views as auth_views
-from django.contrib.auth.models import User
-from esl_bags.serializers import UserSerializer
 from . import views
 
 urlpatterns = [

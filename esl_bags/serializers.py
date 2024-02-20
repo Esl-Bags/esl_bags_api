@@ -60,11 +60,6 @@ class UserSerializer(serializers.ModelSerializer):
     car = CarSerializer(many=True, read_only=True)
     addresses = AddressSerializer(many=True, read_only=True)
 
-    def create(self, validated_data):
-        validated_data['email'] = validated_data['username']
-        validated_data['password'] = make_password(validated_data['password'])
-        return User(**validated_data)
-
     def update(self, instance, validated_data):
         instance.username = validated_data.get('username', instance.username)
         instance.email = validated_data.get('username', instance.username)
@@ -77,3 +72,18 @@ class UserSerializer(serializers.ModelSerializer):
 
         instance.save()
         return instance
+
+class UserCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = [ 'username', 'first_name', 'password' ]
+        extra_kwargs = {'password': {'write_only': True}}
+
+
+    username = serializers.EmailField()
+    first_name = serializers.CharField(max_length=40)
+
+    def create(self, validated_data):
+        validated_data['email'] = validated_data['username']
+        validated_data['password'] = make_password(validated_data['password'])
+        return User.objects.create(**validated_data)
