@@ -3,7 +3,7 @@ from django.contrib.auth.hashers import make_password
 
 from django.contrib.auth.models import User
 from esl_bags.models import Acquisition, Address, Item, Product, Brand, Car
-from esl_bags.validations import emailValidate, valueBlankValidate
+from esl_bags.validations import emailValidate, valueBlankValidate, containsFourCharacters
 
 class AddressSerializer(serializers.ModelSerializer):
     class Meta:
@@ -54,11 +54,38 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ['id', 'username', 'first_name', 'is_staff', 'acquisitions', 'car', 'addresses' ]
         read_only_fields = ['is_staff']
 
-    username = serializers.EmailField()
+    username = serializers.CharField(max_length=80, allow_blank=True)
     first_name = serializers.CharField(max_length=40)
     acquisitions = AcquisitionSerializer(many=True, read_only=True)
     car = CarSerializer(many=True, read_only=True)
     addresses = AddressSerializer(many=True, read_only=True)
+
+    def validate_username(self, value):
+        """
+        Check if value is a valide e-mail address.
+        """
+        if valueBlankValidate(value):
+            raise serializers.ValidationError("O e-mail é obrigatorio.")
+
+        if emailValidate(value):
+            raise serializers.ValidationError("Entre com um endereço de e-mail valido.")
+
+        if emailInUse(value):
+            raise serializers.ValidationError("O e-mail já é usado.")
+
+        return value
+
+    def validate_first_name(self, value):
+        """
+        Check the name field.
+        """
+        if valueBlankValidate(value):
+            raise serializers.ValidationError("O nome é obrigatorio.")
+
+        if not containsFourCharacters(value):
+            raise serializers.ValidationError("O nome deve conter pelo menos 4 caracteres.")
+
+        return value
 
     def update(self, instance, validated_data):
         instance.username = validated_data.get('username', instance.username)
@@ -93,6 +120,28 @@ class UserCreateSerializer(serializers.ModelSerializer):
 
         return value
 
+    def validate_first_name(self, value):
+        """
+        Check the name field.
+        """
+        if valueBlankValidate(value):
+            raise serializers.ValidationError("O nome é obrigatorio.")
+
+        if not containsFourCharacters(value):
+            raise serializers.ValidationError("O nome deve conter pelo menos 4 caracteres.")
+
+        return value
+
+    def validate_password(self, value):
+        """
+        Check password.
+        """
+        if valueBlankValidate(value):
+            raise serializers.ValidationError("A senha é obrigatoria.")
+
+        if not containsFourCharacters(value):
+            raise serializers.ValidationError("A senha deve conter pelo menos 4 caracteres.")
+
     def create(self, validated_data):
         validated_data['email'] = validated_data['username']
         validated_data['password'] = make_password(validated_data['password'])
@@ -104,3 +153,34 @@ def emailInUse(email):
     if len(user) > 0:
         return True
     return False
+
+
+class AuthTokenSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('email', 'password')
+        extra_kwargs = {'password': {'write_only': True}}
+
+    email = serializers.CharField(max_length=80, allow_blank=True)
+
+    def validate(self, data):
+        user_obj = None
+        email = data.get('email')
+        password = data.get('password')
+        if email and password:
+            user_obj = User.objects.filter(email=email).first()
+            if emailValidate(email):
+                raise serializers.ValidationError("Entre com um endereço de e-mail valido.")
+            if not user_obj:
+                raise serializers.ValidationError("E-mail não encontrado.")
+            if not user_obj.check_password(password):
+                raise serializers.ValidationError("E-mail ou senha incorretos.")
+        return data
+
+    def create(self, validated_data):
+        user = User.objects.get(email=validated_data['email'])
+        refresh = RefreshToken.for_user(user)
+        return {
+            'user': user,
+            'token': str(refresh.access_token)
+        }

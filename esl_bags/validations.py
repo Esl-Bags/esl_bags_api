@@ -14,8 +14,11 @@ def isValid(email):
 
 
 def valueBlankValidate(value):
-    print("teste")
-    print(value)
     if value == "" or value == None:
         return True
     return False
+
+def containsFourCharacters(value):
+    if len(value) < 4:
+        return False
+    return True
