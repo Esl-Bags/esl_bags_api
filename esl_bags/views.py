@@ -4,7 +4,7 @@ from rest_framework.permissions import BasePermission
 from rest_framework.views import APIView
 from rest_framework import status
 
-from esl_bags.serializers import UserCreateSerializer, UserSerializer
+from esl_bags.serializers import UserSerializer, UserCreateSerializer
 
 
 class IsPostMethodOrAuthenticated(BasePermission):
@@ -28,6 +28,13 @@ class UserRetriveCreate(APIView):
         user = UserCreateSerializer(data=request.data)
         if user.is_valid():
             user.save()
-            return Response(UserSerializer(user.data).data, status=status.HTTP_201_CREATED)
+            return Response(user.data, status=status.HTTP_201_CREATED)
         return Response(user.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    def patch(self, request, format=None):
+        user = request.user
+        serializer = UserSerializer(user, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
