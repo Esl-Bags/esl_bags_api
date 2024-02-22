@@ -51,16 +51,16 @@ class CarSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'username', 'first_name', 'is_staff', 'acquisitions', 'car', 'addresses' ]
+        fields = ['id', 'email', 'first_name', 'is_staff', 'acquisitions', 'car', 'addresses' ]
         read_only_fields = ['is_staff']
 
-    username = serializers.CharField(max_length=80, allow_blank=True)
+    email = serializers.CharField(max_length=80, allow_blank=True)
     first_name = serializers.CharField(max_length=40)
     acquisitions = AcquisitionSerializer(many=True, read_only=True)
     car = CarSerializer(many=True, read_only=True)
     addresses = AddressSerializer(many=True, read_only=True)
 
-    def validate_username(self, value):
+    def validate_email(self, value):
         """
         Check if value is a valide e-mail address.
         """
@@ -88,8 +88,8 @@ class UserSerializer(serializers.ModelSerializer):
         return value
 
     def update(self, instance, validated_data):
-        instance.username = validated_data.get('username', instance.username)
-        instance.email = validated_data.get('username', instance.username)
+        instance.username = validated_data.get('email', instance.username)
+        instance.email = validated_data.get('email', instance.username)
         instance.first_name = validated_data.get('first_name', instance.first_name)
 
         instance.save()
@@ -99,13 +99,13 @@ class UserSerializer(serializers.ModelSerializer):
 class UserCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = [ 'username', 'first_name', 'password' ]
+        fields = [ 'email', 'first_name', 'password' ]
         extra_kwargs = {'password': {'write_only': True}}
 
-    username = serializers.CharField(max_length=80, allow_blank=True)
+    email = serializers.CharField(max_length=80, allow_blank=True)
     first_name = serializers.CharField(max_length=40)
 
-    def validate_username(self, value):
+    def validate_email(self, value):
         """
         Check if value is a valide e-mail address.
         """
@@ -143,7 +143,7 @@ class UserCreateSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("A senha deve conter pelo menos 4 caracteres.")
 
     def create(self, validated_data):
-        validated_data['email'] = validated_data['username']
+        validated_data['username'] = validated_data['email']
         validated_data['password'] = make_password(validated_data['password'])
         return User.objects.create(**validated_data)
 

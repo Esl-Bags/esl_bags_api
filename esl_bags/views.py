@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 from esl_bags.serializers import UserSerializer, UserCreateSerializer, AuthTokenSerializer
+from django.contrib.auth.hashers import make_password
 
 
 class IsPostMethodOrAuthenticated(BasePermission):
@@ -46,8 +47,6 @@ class AuthLoginUser(ObtainAuthToken):
     def post(self, request, *args, **kwargs):
         serializer = AuthTokenSerializer(data=request.data, context={'request': request})
         if serializer.is_valid():
-            print('teste')
-            print(serializer.validated_data)
             user = User.objects.get(email=serializer.validated_data['email'])
             token, created = Token.objects.get_or_create(user=user)
             return Response({
@@ -56,3 +55,18 @@ class AuthLoginUser(ObtainAuthToken):
                 'email': user.email,
                 })
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class PasswordUpdate(APIView):
+    def patch(self, request, format=None):
+        user = request.user
+        data = request.data
+        if not user.check_password(data['old_password']):
+            return Response({'old_password': 'Senha incorreta.'}, status=status.HTTP_400_BAD_REQUEST)
+        if user.check_password(data['new_password']):
+            return Response({'new_password': 'A nova senha não pode ser igual a antiga.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        user.set_password(data['new_password'])
+        user.save()
+        return Response({'status': 'Senha trocada com sucesso'})
+
