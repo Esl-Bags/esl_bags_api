@@ -103,7 +103,8 @@ class UserCreateSerializer(serializers.ModelSerializer):
         extra_kwargs = {'password': {'write_only': True}}
 
     email = serializers.CharField(max_length=80, allow_blank=True)
-    first_name = serializers.CharField(max_length=40)
+    first_name = serializers.CharField(max_length=40, allow_blank=True)
+    password = serializers.CharField(max_length=40, allow_blank=True)
 
     def validate_email(self, value):
         """
