@@ -97,4 +97,14 @@ class TestCreateUser(APITestCase):
         self.assertEqual(data['password'][0], 'A senha deve conter pelo menos 4 caracteres.')
 
     def test_create_user(self):
-        pass
+        user_request = {
+            'email': 'test@mail.com',
+            'first_name': 'test',
+            'password': '1234'
+        }
+
+        response = self.client.post('/user/', user_request, format='json')
+        data = json.loads(response.content)
+
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(data, {'email': 'test@mail.com', 'first_name': 'test'})
