@@ -1,4 +1,5 @@
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import BasePermission
 from rest_framework.views import APIView
@@ -58,6 +59,7 @@ class AuthLoginUser(ObtainAuthToken):
 
 
 class PasswordUpdate(APIView):
+    permission_classes = [IsAuthenticated]
     def patch(self, request, format=None):
         user = request.user
         data = request.data
@@ -68,5 +70,5 @@ class PasswordUpdate(APIView):
 
         user.set_password(data['new_password'])
         user.save()
-        return Response({'status': 'Senha trocada com sucesso'})
+        return Response({'status': 'Senha trocada com sucesso.'})
 

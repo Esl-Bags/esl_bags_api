@@ -197,4 +197,92 @@ class TestGetUser(APITestCase):
 
 
 class TestUpdateUser(APITestCase):
-        pass
+    def setUp(self):
+        user = User.objects.create_user(username='test@test.com', email='test@test.com', first_name='test', password='test')
+        self.client.force_authenticate(user)
+
+    def test_chance_user(self):
+        change_request = {
+            'email': 'test_change@test.com'
+        }
+
+        response = self.client.patch('/user/', change_request, format='json')
+        data = json.loads(response.content)
+
+        self.assertEqual(data, {
+                                "id": 1,
+                                "email": "test_change@test.com",
+                                "first_name": "test",
+                                "is_staff": False,
+                                "acquisitions": [],
+                                "car": [],
+                                "addresses": []
+                        })
+
+    def test_change_email_blank(self):
+        change_request = {
+            'email': ''
+        }
+
+        response = self.client.patch('/user/', change_request, format='json')
+        data = json.loads(response.content)
+
+        self.assertEqual(data['email'][0], 'O e-mail não pode estar em branco.')
+
+    def test_change_invalide_email(self):
+        change_request = {
+            'email': 'test'
+        }
+
+        response = self.client.patch('/user/', change_request, format='json')
+        data = json.loads(response.content)
+
+        self.assertEqual(data['email'][0], 'Entre com um endereço de e-mail valido.')
+
+    def test_change_email_in_use(self):
+        change_request = {
+            'email': 'test@test.com'
+        }
+
+        response = self.client.patch('/user/', change_request, format='json')
+        data = json.loads(response.content)
+
+        self.assertEqual(data['email'][0], 'O e-mail já é usado.')
+
+    def test_change_name_too_short(self):
+        change_request = {
+            'first_name': 'tes'
+        }
+
+        response = self.client.patch('/user/', change_request, format='json')
+        data = json.loads(response.content)
+
+        self.assertEqual(data['first_name'][0], 'O nome deve conter pelo menos 4 caracteres.')
+
+    def test_change_email_in_use(self):
+        change_request = {
+            'first_name': ''
+        }
+
+        response = self.client.patch('/user/', change_request, format='json')
+        data = json.loads(response.content)
+
+        self.assertEqual(data['first_name'][0], 'O nome não pode estar em branco.')
+
+
+class TestChangePassword(APITestCase):
+    def setUp(self):
+        user = User.objects.create(username='test@test.com', email='test@test.com', first_name='test', password=make_password('test'))
+        self.client.force_authenticate(user)
+
+    def test_change_password(self):
+        change_request = {
+            'old_password': 'test',
+            'new_password': 'test_change'
+        }
+
+        response = self.client.patch('/user/change-password/', change_request, format='json')
+        data = json.loads(response.content)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(data['status'], 'Senha trocada com sucesso.')
