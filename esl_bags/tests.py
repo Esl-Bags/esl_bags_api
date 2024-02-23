@@ -2,6 +2,7 @@ from rest_framework.test import APITestCase
 from django.contrib.auth.hashers import make_password
 import json
 from django.contrib.auth.models import User
+from rest_framework.authtoken.models import Token
 
 class TestCreateUser(APITestCase):
     def test_create_user_without_email(self):
@@ -175,5 +176,25 @@ class TestUserLogin(APITestCase):
 
 
 class TestGetUser(APITestCase):
-    pass
+    def test_get_user(self):
+        user = User.objects.create(username='test@test.com', email='test@test.com', first_name='test', password=make_password('test'))
+        token = Token.objects.create(user=user)
 
+        self.client.credentials(HTTP_AUTHORIZATION='Token ' + token.key)
+        response = self.client.get('/user/')
+        data = json.loads(response.content)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(data, {
+                                "id": 1,
+                                "email": "test@test.com",
+                                "first_name": "test",
+                                "is_staff": False,
+                                "acquisitions": [],
+                                "car": [],
+                                "addresses": []
+                        })
+
+
+class TestUpdateUser(APITestCase):
+        pass
