@@ -108,3 +108,29 @@ class TestCreateUser(APITestCase):
 
         self.assertEqual(response.status_code, 201)
         self.assertEqual(data, {'email': 'test@mail.com', 'first_name': 'test'})
+
+
+class TestUserLogin(APITestCase):
+    def test_login_with_invalide_email(self):
+        login_request = {
+            'email': 'test',
+            'password': 'test'
+        }
+
+        response = self.client.post('/user/login/', login_request, format='json')
+        data = json.loads(response.content)
+
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(data['non_field_errors'][0], 'Entre com um endereço de e-mail valido.')
+
+    def test_login_without_email(self):
+        login_request = {
+            'email': '',
+            'password': 'test'
+        }
+
+        response = self.client.post('/user/login/', login_request, format='json')
+        data = json.loads(response.content)
+
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(data['non_field_errors'][0], 'Entre com um endereço de e-mail valido.')

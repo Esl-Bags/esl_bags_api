@@ -100,11 +100,10 @@ class UserCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = [ 'email', 'first_name', 'password' ]
-        extra_kwargs = {'password': {'write_only': True}}
 
     email = serializers.CharField(max_length=80, allow_blank=True)
     first_name = serializers.CharField(max_length=40, allow_blank=True)
-    password = serializers.CharField(max_length=40, allow_blank=True)
+    password = serializers.CharField(max_length=40, allow_blank=True, write_only=True)
 
     def validate_email(self, value):
         """
@@ -165,17 +164,15 @@ class AuthTokenSerializer(serializers.ModelSerializer):
     email = serializers.CharField(max_length=80, allow_blank=True)
 
     def validate(self, data):
-        user_obj = None
         email = data.get('email')
         password = data.get('password')
-        if email and password:
-            user_obj = User.objects.filter(email=email).first()
-            if emailValidate(email):
-                raise serializers.ValidationError("Entre com um endereço de e-mail valido.")
-            if not user_obj:
-                raise serializers.ValidationError("E-mail não encontrado.")
-            if not user_obj.check_password(password):
-                raise serializers.ValidationError("E-mail ou senha incorretos.")
+        if emailValidate(email) or email == '':
+            raise serializers.ValidationError("Entre com um endereço de e-mail valido.")
+        user_obj = User.objects.filter(email=email).first()
+        if not user_obj:
+            raise serializers.ValidationError("E-mail não encontrado.")
+        if not user_obj.check_password(password):
+            raise serializers.ValidationError("E-mail ou senha incorretos.")
         return data
 
     def create(self, validated_data):
