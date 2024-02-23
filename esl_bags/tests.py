@@ -1,4 +1,5 @@
 from rest_framework.test import APITestCase
+from django.contrib.auth.hashers import make_password
 import json
 from django.contrib.auth.models import User
 
@@ -134,3 +135,45 @@ class TestUserLogin(APITestCase):
 
         self.assertEqual(response.status_code, 400)
         self.assertEqual(data['non_field_errors'][0], 'Entre com um endereço de e-mail valido.')
+
+    def test_login_email_not_found(self):
+        login_request = {
+            'email': 'test@test.com',
+            'password': 'test'
+        }
+
+        response = self.client.post('/user/login/', login_request, format='json')
+        data = json.loads(response.content)
+
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(data['non_field_errors'][0], 'E-mail não encontrado.')
+
+    def test_login_password_wrong(self):
+        User.objects.create(username="test@test.com", email="test@test.com", password="test")
+        login_request = {
+            'email': 'test@test.com',
+            'password': 'wrong_password'
+        }
+
+        response = self.client.post('/user/login/', login_request, format='json')
+        data = json.loads(response.content)
+
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(data['non_field_errors'][0], 'E-mail ou senha incorretos.')
+
+    def test_login_success(self):
+        User.objects.create(username='test@test.com', email='test@test.com', first_name='test', password=make_password('test'))
+        login_request = {
+            'email': 'test@test.com',
+            'password': 'test'
+        }
+
+        response = self.client.post('/user/login/', login_request, format='json')
+        data = json.loads(response.content)
+
+        self.assertEqual(response.status_code, 200)
+
+
+class TestGetUser(APITestCase):
+    pass
+
