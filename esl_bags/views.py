@@ -1,4 +1,5 @@
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import BasePermission
 from rest_framework.views import APIView
@@ -7,7 +8,6 @@ from django.contrib.auth.models import User
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 from esl_bags.serializers import UserSerializer, UserCreateSerializer, AuthTokenSerializer
-from django.contrib.auth.hashers import make_password
 
 
 class IsPostMethodOrAuthenticated(BasePermission):
@@ -58,6 +58,7 @@ class AuthLoginUser(ObtainAuthToken):
 
 
 class PasswordUpdate(APIView):
+    permission_classes = [IsAuthenticated]
     def patch(self, request, format=None):
         user = request.user
         data = request.data
@@ -68,5 +69,20 @@ class PasswordUpdate(APIView):
 
         user.set_password(data['new_password'])
         user.save()
-        return Response({'status': 'Senha trocada com sucesso'})
+        return Response({'status': 'Senha trocada com sucesso.'})
 
+
+class ForgetPassword(APIView):
+    def post(self, request):
+        return Response({'message': 'Mermão, lembra dessa senha ai q eu tô com preguiça de implementar isso.'})
+
+
+class ResetPassword(APIView):
+    authentication_classes = [TokenAuthentication]
+    def post(self, request):
+        user = request.user
+        data = request.data
+        if not data['password']:
+            Response({'password': 'Esse campo é obrigatório.'}, status=status.HTTP_400_BAD_REQUEST)
+        if len(data['password']) < 4:
+            pass

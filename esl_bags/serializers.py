@@ -55,7 +55,7 @@ class UserSerializer(serializers.ModelSerializer):
         read_only_fields = ['is_staff']
 
     email = serializers.CharField(max_length=80, allow_blank=True)
-    first_name = serializers.CharField(max_length=40)
+    first_name = serializers.CharField(max_length=40, allow_blank=True)
     acquisitions = AcquisitionSerializer(many=True, read_only=True)
     car = CarSerializer(many=True, read_only=True)
     addresses = AddressSerializer(many=True, read_only=True)
@@ -65,7 +65,7 @@ class UserSerializer(serializers.ModelSerializer):
         Check if value is a valide e-mail address.
         """
         if valueBlankValidate(value):
-            raise serializers.ValidationError("O e-mail é obrigatorio.")
+            raise serializers.ValidationError("O e-mail não pode estar em branco.")
 
         if emailValidate(value):
             raise serializers.ValidationError("Entre com um endereço de e-mail valido.")
@@ -80,7 +80,7 @@ class UserSerializer(serializers.ModelSerializer):
         Check the name field.
         """
         if valueBlankValidate(value):
-            raise serializers.ValidationError("O nome é obrigatorio.")
+            raise serializers.ValidationError("O nome não pode estar em branco.")
 
         if not containsFourCharacters(value):
             raise serializers.ValidationError("O nome deve conter pelo menos 4 caracteres.")
@@ -100,11 +100,10 @@ class UserCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = [ 'email', 'first_name', 'password' ]
-        extra_kwargs = {'password': {'write_only': True}}
 
     email = serializers.CharField(max_length=80, allow_blank=True)
     first_name = serializers.CharField(max_length=40, allow_blank=True)
-    password = serializers.CharField(max_length=40, allow_blank=True)
+    password = serializers.CharField(max_length=40, allow_blank=True, write_only=True)
 
     def validate_email(self, value):
         """
@@ -165,17 +164,15 @@ class AuthTokenSerializer(serializers.ModelSerializer):
     email = serializers.CharField(max_length=80, allow_blank=True)
 
     def validate(self, data):
-        user_obj = None
         email = data.get('email')
         password = data.get('password')
-        if email and password:
-            user_obj = User.objects.filter(email=email).first()
-            if emailValidate(email):
-                raise serializers.ValidationError("Entre com um endereço de e-mail valido.")
-            if not user_obj:
-                raise serializers.ValidationError("E-mail não encontrado.")
-            if not user_obj.check_password(password):
-                raise serializers.ValidationError("E-mail ou senha incorretos.")
+        if emailValidate(email) or email == '':
+            raise serializers.ValidationError("Entre com um endereço de e-mail valido.")
+        user_obj = User.objects.filter(email=email).first()
+        if not user_obj:
+            raise serializers.ValidationError("E-mail não encontrado.")
+        if not user_obj.check_password(password):
+            raise serializers.ValidationError("E-mail ou senha incorretos.")
         return data
 
     def create(self, validated_data):
