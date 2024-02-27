@@ -14,10 +14,17 @@ RUN apt-get update \
  
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
+<<<<<<< HEAD:Dockerfile
 
 COPY ./requirements /requirements
 RUN pip install --no-cache-dir -r /requirements/prod.txt \
     && rm -rf /requirements
+=======
+ 
+COPY ./requirements/commun.txt /requirements.txt
+RUN pip install --no-cache-dir -r /requirements.txt \
+    && rm -rf /requirements.txt
+>>>>>>> 305a881 (change file requirements):DockerFile
  
 COPY . /usr/src/app
  
