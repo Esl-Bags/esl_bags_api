@@ -18,6 +18,7 @@ WORKDIR /usr/src/app
 COPY ./requirements /requirements
 RUN pip install --no-cache-dir -r /requirements/prod.txt \
     && rm -rf /requirements
+
  
 COPY . /usr/src/app
  
