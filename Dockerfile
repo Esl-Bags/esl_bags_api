@@ -14,10 +14,10 @@ RUN apt-get update \
  
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
- 
-COPY ./requirements/commun.txt /requirements.txt
-RUN pip install --no-cache-dir -r /requirements.txt \
-    && rm -rf /requirements.txt
+
+COPY ./requirements /requirements
+RUN pip install --no-cache-dir -r /requirements/prod.txt \
+    && rm -rf /requirements
  
 COPY . /usr/src/app
  
