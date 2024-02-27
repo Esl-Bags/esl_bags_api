@@ -139,6 +139,6 @@ EMAIL_PORT = '1025'
 EMAIL_HOST = 'localhost'
 
 
-PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
-STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
+BASE_DIR = Path(__file__).resolve().parent.parent 
+STATIC_URL = 'static/'                                                                              
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
