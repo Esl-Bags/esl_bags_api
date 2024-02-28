@@ -6,6 +6,7 @@ from django.template.loader import render_to_string
 from django.urls import reverse
 
 from django_rest_passwordreset.signals import reset_password_token_created
+import os
 
 
 @receiver(reset_password_token_created)
@@ -40,7 +41,7 @@ def password_reset_token_created(sender, instance, reset_password_token, *args, 
         # message:
         email_plaintext_message,
         # from:
-        "noreply@yourdomain.com",
+        os.environ.setdefault('USER_MAIL', "noreply@yourdomain.com"),
         # to:
         [reset_password_token.user.email]
     )
