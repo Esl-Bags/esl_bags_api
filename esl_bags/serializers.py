@@ -141,6 +141,8 @@ class UserCreateSerializer(serializers.ModelSerializer):
 
         if not containsFourCharacters(value):
             raise serializers.ValidationError("A senha deve conter pelo menos 4 caracteres.")
+        
+        return value
 
     def create(self, validated_data):
         validated_data['username'] = validated_data['email']
