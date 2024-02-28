@@ -2,6 +2,7 @@ from django.urls import include, path
 from rest_framework.authtoken import views as auth_views
 from . import views
 
+#teste github actions
 urlpatterns = [
     path('user/', views.UserRetriveCreate.as_view()),
     path('user/login/', views.AuthLoginUser.as_view()),
