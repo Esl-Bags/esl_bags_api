@@ -4,6 +4,7 @@ from django.db import models
 
 class Brand(models.Model):
     name = models.CharField(max_length=30)
+    is_active = models.BooleanField(blank=True, default=True)
 
 
 class Product(models.Model):
@@ -12,7 +13,7 @@ class Product(models.Model):
     photo = models.ImageField(upload_to = 'media/images/products')
     description = models.CharField(max_length=80)
     price = models.FloatField()
-    is_active = models.BooleanField(blank=True, default=False)
+    is_active = models.BooleanField(blank=True, default=True)
 
 
 class Address(models.Model):
@@ -52,7 +53,7 @@ class Address(models.Model):
     name = models.CharField(max_length=25)
     neighborhood = models.CharField(max_length=25)
     user = models.ForeignKey('auth.User', related_name='addresses', on_delete=models.CASCADE)
-    is_active = models.BooleanField(blank=True, default=False)
+    is_active = models.BooleanField(blank=True, default=True)
 
 
 class Acquisition(models.Model):
@@ -72,4 +73,3 @@ class Item(models.Model):
 class Car(models.Model):
     product = models.ForeignKey('Product', on_delete=models.CASCADE)
     user = models.ForeignKey('auth.User', related_name='car', on_delete=models.CASCADE)
-

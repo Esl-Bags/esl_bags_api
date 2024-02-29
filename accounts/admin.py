@@ -1,5 +1,5 @@
 from django.contrib import admin
-from esl_bags.models import Brand, Product, Address, Acquisition, Item, Car
+from accounts.models import Brand, Product, Address, Acquisition, Item, Car
 
 # Register your models here.
 admin.site.register(Brand)

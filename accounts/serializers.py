@@ -2,8 +2,8 @@ from rest_framework import serializers
 from django.contrib.auth.hashers import make_password
 
 from django.contrib.auth.models import User
-from esl_bags.models import Acquisition, Address, Item, Product, Brand, Car
-from esl_bags.validations import emailValidate, valueBlankValidate, containsFourCharacters
+from accounts.models import Acquisition, Address, Item, Product, Brand, Car
+from accounts.validations import emailValidate, valueBlankValidate, containsFourCharacters
 
 class AddressSerializer(serializers.ModelSerializer):
     class Meta:

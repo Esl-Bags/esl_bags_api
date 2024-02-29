@@ -33,7 +33,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'esl_bags.apps.EslBagsConfig',
+    'accounts.apps.AccountsConfig',
     'rest_framework',
     'rest_framework.authtoken',
     'django_rest_passwordreset'
