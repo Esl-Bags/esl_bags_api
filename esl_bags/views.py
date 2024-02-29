@@ -70,19 +70,3 @@ class PasswordUpdate(APIView):
         user.set_password(data['new_password'])
         user.save()
         return Response({'status': 'Senha trocada com sucesso.'})
-
-
-class ForgetPassword(APIView):
-    def post(self, request):
-        return Response({'message': 'Mermão, lembra dessa senha ai q eu tô com preguiça de implementar isso.'})
-
-
-class ResetPassword(APIView):
-    authentication_classes = [TokenAuthentication]
-    def post(self, request):
-        user = request.user
-        data = request.data
-        if not data['password']:
-            Response({'password': 'Esse campo é obrigatório.'}, status=status.HTTP_400_BAD_REQUEST)
-        if len(data['password']) < 4:
-            pass

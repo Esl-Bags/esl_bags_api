@@ -175,14 +175,14 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8000/user/password_reset/",
+							"raw": "localhost:8000/user/forget-password/",
 							"host": [
 								"localhost"
 							],
 							"port": "8000",
 							"path": [
 								"user",
-								"password_reset",
+								"forget-password",
 								""
 							]
 						}

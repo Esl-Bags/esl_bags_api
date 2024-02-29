@@ -8,6 +8,5 @@ urlpatterns = [
     path('user/login/', views.AuthLoginUser.as_view()),
     path('user/change-password/', views.PasswordUpdate.as_view()),
     path('api-auth/', include('rest_framework.urls')),
-    path('user/forget-password/', views.ForgetPassword.as_view()),
-    path('user/password_reset/', include('django_rest_passwordreset.urls', namespace='password_reset')),
+    path('user/forget-password/', include('django_rest_passwordreset.urls', namespace='password_reset')),
 ]
