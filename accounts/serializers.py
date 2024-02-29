@@ -2,50 +2,8 @@ from rest_framework import serializers
 from django.contrib.auth.hashers import make_password
 
 from django.contrib.auth.models import User
-from esl_bags.models import Acquisition, Address, Item, Product, Brand, Car
-from esl_bags.validations import emailValidate, valueBlankValidate, containsFourCharacters
-
-class AddressSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Address
-        fields = ['id', 'cep', 'uf', 'city', 'name', 'neighborhood']
-
-
-class BrandSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Brand
-        fields = ['name']
-
-
-class ProductSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Product
-        fields = ['id', 'name', 'photo', 'description', 'price', 'brand']
-
-    brand = BrandSerializer(read_only=True)
-
-
-class ItemSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Item
-        fields = ['id', 'product', 'price']
-
-    product = ProductSerializer(read_only=True)
-
-
-class AcquisitionSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Acquisition
-        fields = ['id', 'price', 'date', 'status', 'address', 'items']
-
-    address = AddressSerializer(read_only=True)
-    items = ItemSerializer(many=True, read_only=True)
-
-
-class CarSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Car
-        fields = ['product']
+from sales.serializers import AcquisitionSerializer, CarSerializer, AddressSerializer
+from accounts.validations import emailValidate, valueBlankValidate, containsFourCharacters
 
 
 class UserSerializer(serializers.ModelSerializer):

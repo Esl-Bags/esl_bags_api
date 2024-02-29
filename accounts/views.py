@@ -7,7 +7,7 @@ from rest_framework import status
 from django.contrib.auth.models import User
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
-from esl_bags.serializers import UserSerializer, UserCreateSerializer, AuthTokenSerializer
+from accounts.serializers import UserSerializer, UserCreateSerializer, AuthTokenSerializer
 
 
 class IsPostMethodOrAuthenticated(BasePermission):
