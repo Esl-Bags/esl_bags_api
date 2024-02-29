@@ -34,6 +34,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'accounts.apps.AccountsConfig',
+    'products',
+    'sales',
     'rest_framework',
     'rest_framework.authtoken',
     'django_rest_passwordreset'
