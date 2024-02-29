@@ -7,6 +7,16 @@ class BrandSerializer(serializers.ModelSerializer):
         model = Brand
         fields = ['name']
 
+    def validate_name(self, value):
+        brand = Brand.objects.filter(name=value, is_active=True)
+        if len(brand) > 0:
+            raise serializers.ValidationError("A marca já foi registrada.")
+        
+        if len(value) < 3:
+            raise serializers.ValidationError("A marca deve conter mais de dois caracteres.")
+        
+        return value
+
 
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:

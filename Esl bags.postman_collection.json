@@ -132,13 +132,13 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Token e590b3cc08a43689f5a7ad421f7dc4f3dfec13c0",
+								"value": "Token aaa57a90c3bc290685ce3ad9b3471b7ba5ab698a",
 								"type": "text"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"old_password\": \"password\",\n    \"new_password\": \"password_change\"\n}",
+							"raw": "{\n    \"old_password\": \"test\",\n    \"new_password\": \"password_change\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -183,6 +183,66 @@
 							"path": [
 								"user",
 								"forget-password",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Brand",
+			"item": [
+				{
+					"name": "cadastrar marca",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token e590b3cc08a43689f5a7ad421f7dc4f3dfec13c0",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"test\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8000/product/brand/",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"product",
+								"brand",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "pegar marcas",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/product/brand/",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"product",
+								"brand",
 								""
 							]
 						}

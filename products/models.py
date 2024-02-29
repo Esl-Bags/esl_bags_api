@@ -5,6 +5,9 @@ class Brand(models.Model):
     name = models.CharField(max_length=30)
     is_active = models.BooleanField(blank=True, default=True)
 
+    def __str__(self):
+        return self.name
+
 
 class Product(models.Model):
     name = models.CharField(max_length=40)
