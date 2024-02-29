@@ -1,20 +1,6 @@
 from django.db import models
 
 # Create your models here.
-
-class Brand(models.Model):
-    name = models.CharField(max_length=30)
-
-
-class Product(models.Model):
-    name = models.CharField(max_length=40)
-    brand = models.ForeignKey('Brand', related_name='products', on_delete=models.CASCADE)
-    photo = models.ImageField(upload_to = 'media/images/products')
-    description = models.CharField(max_length=80)
-    price = models.FloatField()
-    is_active = models.BooleanField(blank=True, default=False)
-
-
 class Address(models.Model):
     UFS = {
         'AC': 'Acre',
@@ -52,7 +38,7 @@ class Address(models.Model):
     name = models.CharField(max_length=25)
     neighborhood = models.CharField(max_length=25)
     user = models.ForeignKey('auth.User', related_name='addresses', on_delete=models.CASCADE)
-    is_active = models.BooleanField(blank=True, default=False)
+    is_active = models.BooleanField(blank=True, default=True)
 
 
 class Acquisition(models.Model):
@@ -64,12 +50,11 @@ class Acquisition(models.Model):
 
 
 class Item(models.Model):
-    product = models.ForeignKey('Product', on_delete=models.CASCADE)
+    product = models.ForeignKey('products.Product', on_delete=models.CASCADE)
     acquisition = models.ForeignKey('Acquisition', related_name='items', on_delete=models.CASCADE)
     price = models.FloatField()
 
 
 class Car(models.Model):
-    product = models.ForeignKey('Product', on_delete=models.CASCADE)
+    product = models.ForeignKey('products.Product', on_delete=models.CASCADE)
     user = models.ForeignKey('auth.User', related_name='car', on_delete=models.CASCADE)
-

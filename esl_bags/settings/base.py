@@ -33,7 +33,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'esl_bags.apps.EslBagsConfig',
+    'accounts.apps.AccountsConfig',
+    'products',
+    'sales',
     'rest_framework',
     'rest_framework.authtoken',
     'django_rest_passwordreset'
@@ -57,7 +59,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'core.urls'
+ROOT_URLCONF = 'esl_bags.urls'
 
 TEMPLATES = [
     {
@@ -75,7 +77,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'core.wsgi.application'
+WSGI_APPLICATION = 'esl_bags.wsgi.application'
 
 
 # Database

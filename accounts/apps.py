@@ -1,9 +1,9 @@
 from django.apps import AppConfig
 
 
-class EslBagsConfig(AppConfig):
+class AccountsConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'esl_bags'
+    name = 'accounts'
 
     def ready(self):
-        import esl_bags.signals
+        import accounts.signals
