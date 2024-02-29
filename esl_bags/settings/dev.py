@@ -1,4 +1,4 @@
-from core.settings.base import *
+from esl_bags.settings.base import *
 
 ALLOWED_HOSTS = []
 
