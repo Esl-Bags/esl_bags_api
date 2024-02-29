@@ -203,7 +203,8 @@ class TestUpdateUser(APITestCase):
 
     def test_chance_user(self):
         change_request = {
-            'email': 'test_change@test.com'
+            'email': 'test_change@test.com',
+            'first_name': 'test_change'
         }
 
         response = self.client.patch('/user/', change_request, format='json')
@@ -212,7 +213,7 @@ class TestUpdateUser(APITestCase):
         self.assertEqual(data, {
                                 "id": 1,
                                 "email": "test_change@test.com",
-                                "first_name": "test",
+                                "first_name": "test_change",
                                 "is_staff": False,
                                 "acquisitions": [],
                                 "car": [],
@@ -259,7 +260,7 @@ class TestUpdateUser(APITestCase):
 
         self.assertEqual(data['first_name'][0], 'O nome deve conter pelo menos 4 caracteres.')
 
-    def test_change_email_in_use(self):
+    def test_change_name_in_blank(self):
         change_request = {
             'first_name': ''
         }
