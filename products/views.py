@@ -1,7 +1,7 @@
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import BasePermission
-from rest_framework.generics import ListCreateAPIView
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework import status
 
 from products.models import Brand
@@ -31,3 +31,26 @@ class BrandCreateList(ListCreateAPIView):
             brand.save()
             return Response(brand.data, status=status.HTTP_201_CREATED)
         return Response(brand.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+
+class BrandUpdateDelete(RetrieveUpdateDestroyAPIView):
+    queryset = Brand.objects.all()
+    serializer_class = BrandSerializer
+    permission_classes = [IsGetMethodOrAuthenticated]
+
+    def path(self, request, format=None):
+        if not request.user.is_staff:
+            return Response({'detail': 'Usuário não tem permissão para atualizar marcas.'}, status=status.HTTP_400_BAD_REQUEST)
+        brand = BrandSerializer(data=request.data)
+        if brand.is_valid():
+            brand.save()
+            return Response(brand.data, status=status.HTTP_201_CREATED)
+        return Response(brand.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    def delete(self, request, pk, format=None):
+        if not request.user.is_staff:
+            return Response({'detail': 'Usuário não tem permissão para deletar marcas.'}, status=status.HTTP_400_BAD_REQUEST)
+        brand = Brand.objects.get(id=pk)
+        brand.is_active = False
+        brand.save()
+        return Response(status=status.HTTP_204_NO_CONTENT)
