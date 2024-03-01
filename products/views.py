@@ -77,14 +77,13 @@ class ProductCreateList(ListCreateAPIView):
             return Response({'detail': 'Usuário não tem permissão para cadastro de produtos.'}, status=status.HTTP_400_BAD_REQUEST)
         product = ProductSerializer(data=request.data)
         if product.is_valid():
-            print('entrou aqui')
-            # brand = Brand.objects.get(id=product.validated_data['brand'])
-            # product_obj = Product.objects.filter(name=request.data['name'], brand=brand).first()
-            # if product_obj:
-            #     product_obj.is_active = True
-            #     product_obj.save()
-            # else:
-            product.save()
+            brand = product.validated_data['brand']
+            product_obj = Product.objects.filter(name=request.data['name'], brand=brand).first()
+            if product_obj:
+                product_obj.is_active = True
+                product_obj.save()
+            else:
+                product.save()
             return Response(product.data, status=status.HTTP_201_CREATED)
         return Response(product.errors, status=status.HTTP_400_BAD_REQUEST)
     

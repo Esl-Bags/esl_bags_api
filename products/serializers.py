@@ -5,7 +5,7 @@ from products.models import Brand, Product
 class BrandSerializer(serializers.ModelSerializer):
     class Meta:
         model = Brand
-        fields = ['name']
+        fields = ['id', 'name']
 
     def validate_name(self, value):
         brand = Brand.objects.filter(name=value, is_active=True)
