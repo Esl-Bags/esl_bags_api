@@ -3,9 +3,11 @@ from rest_framework.views import APIView
 from rest_framework.permissions import BasePermission
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework import status
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters
 
-from products.models import Brand
-from products.serializers import BrandSerializer
+from products.models import Brand, Product
+from products.serializers import BrandSerializer, ProductSerializer
 
 
 class IsGetMethodOrAuthenticated(BasePermission):
@@ -59,3 +61,33 @@ class BrandUpdateDelete(RetrieveUpdateDestroyAPIView):
         brand.is_active = False
         brand.save()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class ProductCreateList(ListCreateAPIView):
+    queryset = Product.objects.filter(is_active=True)
+    serializer_class = ProductSerializer
+    permission_classes = [IsGetMethodOrAuthenticated]
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
+    filterset_fields = ['brand']
+    search_fields = ['name', 'description']
+
+
+    def post(self, request, format=None):
+        if not request.user.is_staff:
+            return Response({'detail': 'Usuário não tem permissão para cadastro de produtos.'}, status=status.HTTP_400_BAD_REQUEST)
+        product = ProductSerializer(data=request.data)
+        if product.is_valid():
+            print('entrou aqui')
+            # brand = Brand.objects.get(id=product.validated_data['brand'])
+            # product_obj = Product.objects.filter(name=request.data['name'], brand=brand).first()
+            # if product_obj:
+            #     product_obj.is_active = True
+            #     product_obj.save()
+            # else:
+            product.save()
+            return Response(product.data, status=status.HTTP_201_CREATED)
+        return Response(product.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+
+class ProductUpdateDelete(APIView):
+    pass

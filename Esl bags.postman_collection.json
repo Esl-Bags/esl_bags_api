@@ -248,6 +248,69 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "deletar marca",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token e590b3cc08a43689f5a7ad421f7dc4f3dfec13c0",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8000/product/brand/<id>/",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"product",
+								"brand",
+								"<id>",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "editar marca",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token ",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:8000/product/brand/<id>/",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"product",
+								"brand",
+								"<id>",
+								""
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		}
