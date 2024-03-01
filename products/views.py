@@ -28,7 +28,12 @@ class BrandCreateList(ListCreateAPIView):
             return Response({'detail': 'Usuário não tem permissão para cadastro de marcas.'}, status=status.HTTP_400_BAD_REQUEST)
         brand = BrandSerializer(data=request.data)
         if brand.is_valid():
-            brand.save()
+            brand_obj = Brand.objects.filter(name=request.data['name']).first()
+            if brand_obj:
+                brand_obj.is_active = True
+                brand_obj.save()
+            else:
+                brand.save()
             return Response(brand.data, status=status.HTTP_201_CREATED)
         return Response(brand.errors, status=status.HTTP_400_BAD_REQUEST)
     
