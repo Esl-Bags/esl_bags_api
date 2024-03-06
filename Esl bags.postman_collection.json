@@ -201,7 +201,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Token e590b3cc08a43689f5a7ad421f7dc4f3dfec13c0",
+								"value": "Token 0e272f38f01219ac3e517698780dd8c7ab053b6d",
 								"type": "text"
 							}
 						],
@@ -243,6 +243,27 @@
 							"path": [
 								"product",
 								"brand",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "pegar uma marca",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/product/brand/<id>/",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"product",
+								"brand",
+								"<id>",
 								""
 							]
 						}
@@ -292,10 +313,19 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Token ",
+								"value": "Token 0e272f38f01219ac3e517698780dd8c7ab053b6d",
 								"type": "text"
 							}
 						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"test_change\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
 							"raw": "localhost:8000/product/brand/<id>/",
 							"host": [
@@ -398,13 +428,39 @@
 					"response": []
 				},
 				{
+					"name": "pegar um produto",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/product/<id>/",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"product",
+								"<id>",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "editar produto",
 					"request": {
 						"method": "PATCH",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token e590b3cc08a43689f5a7ad421f7dc4f3dfec13c0",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \n}",
+							"raw": "{\n    \"name\": \"test_change\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
