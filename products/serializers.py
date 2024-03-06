@@ -42,10 +42,11 @@ class ProductSerializer(serializers.ModelSerializer):
         name = attrs.get('name', '')
         brand = attrs.get('brand', '')
         
-        product = Product.objects.filter(name=name, brand=brand.id, is_active=True)
+        if name and brand:
+            product = Product.objects.filter(name=name, brand=brand.id, is_active=True)
 
-        if len(product) > 0:
-            raise serializers.ValidationError("O produto já foi registrado.")
+            if len(product) > 0:
+                raise serializers.ValidationError("O produto já foi registrado.")
         
         return attrs
 

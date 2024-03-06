@@ -1,5 +1,4 @@
 from rest_framework.response import Response
-from rest_framework.views import APIView
 from rest_framework.permissions import BasePermission
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework import status
@@ -45,10 +44,11 @@ class BrandUpdateDelete(RetrieveUpdateDestroyAPIView):
     serializer_class = BrandSerializer
     permission_classes = [IsGetMethodOrAuthenticated]
 
-    def path(self, request, format=None):
+    def patch(self, request, pk):
         if not request.user.is_staff:
             return Response({'detail': 'Usuário não tem permissão para atualizar marcas.'}, status=status.HTTP_400_BAD_REQUEST)
-        brand = BrandSerializer(data=request.data)
+        brand_obj = Brand.objects.get(id=pk)
+        brand = BrandSerializer(brand_obj, data=request.data, partial=True)
         if brand.is_valid():
             brand.save()
             return Response(brand.data, status=status.HTTP_201_CREATED)
@@ -88,5 +88,26 @@ class ProductCreateList(ListCreateAPIView):
         return Response(product.errors, status=status.HTTP_400_BAD_REQUEST)
     
 
-class ProductUpdateDelete(APIView):
-    pass
+class ProductUpdateDelete(RetrieveUpdateDestroyAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+    permission_classes = [IsGetMethodOrAuthenticated]
+
+    def patch(self, request, pk):
+        if not request.user.is_staff:
+            return Response({'detail': 'Usuário não tem permissão para atualizar produtos.'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        product_obj = Product.objects.get(id=pk)
+        product = ProductSerializer(product_obj, data=request.data, partial=True)
+        if product.is_valid():
+            product.save()
+            return Response(product.data, status=status.HTTP_201_CREATED)
+        return Response(product.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    def delete(self, request, pk, format=None):
+        if not request.user.is_staff:
+            return Response({'detail': 'Usuário não tem permissão para deletar produtos.'}, status=status.HTTP_400_BAD_REQUEST)
+        product = Product.objects.get(id=pk)
+        product.is_active = False
+        product.save()
+        return Response(status=status.HTTP_204_NO_CONTENT)
