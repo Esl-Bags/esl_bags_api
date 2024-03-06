@@ -248,8 +248,215 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "deletar marca",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token e590b3cc08a43689f5a7ad421f7dc4f3dfec13c0",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8000/product/brand/<id>/",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"product",
+								"brand",
+								"<id>",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "editar marca",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token ",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:8000/product/brand/<id>/",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"product",
+								"brand",
+								"<id>",
+								""
+							]
+						}
+					},
+					"response": []
 				}
 			]
+		},
+		{
+			"name": "Product",
+			"item": [
+				{
+					"name": "cadastrar produto",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token e590b3cc08a43689f5a7ad421f7dc4f3dfec13c0",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "produto2",
+									"type": "text"
+								},
+								{
+									"key": "photo",
+									"type": "file",
+									"src": []
+								},
+								{
+									"key": "description",
+									"value": "test",
+									"type": "text"
+								},
+								{
+									"key": "price",
+									"value": "50",
+									"type": "text"
+								},
+								{
+									"key": "brand",
+									"value": "Lui",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:8000/product/",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"product",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listar produtos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/product/?name=<id da marca>search=<parte do nome ou descrição>",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"product",
+								""
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "<id da marca>search=<parte do nome ou descrição>"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "editar produto",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8000/product/<id>/",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"product",
+								"<id>",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deletar produto",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:8000/product/<id>/",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"product",
+								"<id>",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Sales",
+			"item": []
 		}
 	]
 }

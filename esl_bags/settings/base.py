@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'sales',
     'rest_framework',
     'rest_framework.authtoken',
-    'django_rest_passwordreset'
+    'django_rest_passwordreset',
+    'django_filters'
 ]
 
 REST_FRAMEWORK = {
@@ -46,7 +47,8 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.TokenAuthentication',
-    ]
+    ],
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
 }
 
 MIDDLEWARE = [
@@ -128,6 +130,10 @@ USE_TZ = True
 # BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+
+# Root to medias
+MEDIA_UTL = 'media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
