@@ -4,12 +4,13 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import BasePermission
 from rest_framework.views import APIView
 from rest_framework import status
-from django.contrib.auth.models import User
 from rest_framework.authtoken.views import ObtainAuthToken
+from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
+from products.models import Product
+from accounts.models import Car
 from accounts.serializers import UserSerializer, UserCreateSerializer, AuthTokenSerializer, CarSerializer
 from products.serializers import ProductSerializer
-from accounts.models import Car
 
 
 class IsPostMethodOrAuthenticated(BasePermission):
@@ -84,7 +85,6 @@ class CarListAdd(APIView):
             product.append(item.product)
 
         serializer = ProductSerializer(product, many=True)
-        print(serializer.data)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     
@@ -101,4 +101,11 @@ class CarRemove(APIView):
     permission_classes = [IsAuthenticated]
 
     def delete(self, request, pk):
-        pass
+        user = request.user
+        product = Product.objects.get(id=pk)
+
+        item = Car.objects.filter(user=user, product=product)
+        if len(item) > 0:
+            item[0].delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response({ 'erro': 'Item não encontrado' }, status=status.HTTP_400_BAD_REQUEST)
