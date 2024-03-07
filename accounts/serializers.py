@@ -2,8 +2,15 @@ from rest_framework import serializers
 from django.contrib.auth.hashers import make_password
 
 from django.contrib.auth.models import User
-from sales.serializers import AcquisitionSerializer, CarSerializer, AddressSerializer
+from accounts.models import Car
+from sales.serializers import AcquisitionSerializer, AddressSerializer
 from accounts.validations import emailValidate, valueBlankValidate, containsFourCharacters
+
+
+class CarSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Car
+        fields = ['user', 'product']
 
 
 class UserSerializer(serializers.ModelSerializer):

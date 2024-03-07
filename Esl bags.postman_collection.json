@@ -73,7 +73,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Token e590b3cc08a43689f5a7ad421f7dc4f3dfec13c0",
+								"value": "Token 440bf5887a61b04853eb17cbf24da1fc15e07eea",
 								"type": "text"
 							}
 						],
@@ -201,7 +201,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Token 0e272f38f01219ac3e517698780dd8c7ab053b6d",
+								"value": "Token 8fd62e9dab14eee3e5f0d11b5b38501dd295a8c3",
 								"type": "text"
 							}
 						],
@@ -354,7 +354,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Token e590b3cc08a43689f5a7ad421f7dc4f3dfec13c0",
+								"value": "Token 8fd62e9dab14eee3e5f0d11b5b38501dd295a8c3",
 								"type": "text"
 							}
 						],
@@ -369,7 +369,7 @@
 								{
 									"key": "photo",
 									"type": "file",
-									"src": []
+									"src": "/home/filipe_vilanova/Downloads/nintendo.jpeg"
 								},
 								{
 									"key": "description",
@@ -383,7 +383,7 @@
 								},
 								{
 									"key": "brand",
-									"value": "Lui",
+									"value": "test",
 									"type": "text"
 								}
 							]
@@ -511,8 +511,100 @@
 			]
 		},
 		{
-			"name": "Sales",
-			"item": []
+			"name": "Car",
+			"item": [
+				{
+					"name": "Adicionar ao carrinho",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token 440bf5887a61b04853eb17cbf24da1fc15e07eea",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"product\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/user/car/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"user",
+								"car",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "pegar carrinho",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token 440bf5887a61b04853eb17cbf24da1fc15e07eea",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8000/user/car/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"user",
+								"car",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remover do carrinho",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token 440bf5887a61b04853eb17cbf24da1fc15e07eea",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8000/user/car/<id do produto q quer remover>/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"user",
+								"car",
+								"<id do produto q quer remover>",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	]
 }
