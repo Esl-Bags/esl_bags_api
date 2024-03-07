@@ -53,8 +53,3 @@ class Item(models.Model):
     product = models.ForeignKey('products.Product', on_delete=models.CASCADE)
     acquisition = models.ForeignKey('Acquisition', related_name='items', on_delete=models.CASCADE)
     price = models.FloatField()
-
-
-class Car(models.Model):
-    product = models.ForeignKey('products.Product', on_delete=models.CASCADE)
-    user = models.ForeignKey('auth.User', related_name='car', on_delete=models.CASCADE)

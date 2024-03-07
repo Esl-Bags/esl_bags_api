@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from sales.models import Address, Item, Acquisition, Car
+from sales.models import Address, Item, Acquisition
 from products.serializers import ProductSerializer
 
 
@@ -24,9 +24,3 @@ class AcquisitionSerializer(serializers.ModelSerializer):
 
     address = AddressSerializer(read_only=True)
     items = ItemSerializer(many=True, read_only=True)
-
-
-class CarSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Car
-        fields = ['product']
