@@ -7,7 +7,7 @@ from rest_framework import status
 from django.contrib.auth.models import User
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
-from accounts.serializers import UserSerializer, UserCreateSerializer, AuthTokenSerializer
+from accounts.serializers import UserSerializer, UserCreateSerializer, AuthTokenSerializer, CarSerializer
 
 
 class IsPostMethodOrAuthenticated(BasePermission):
@@ -70,3 +70,25 @@ class PasswordUpdate(APIView):
         user.set_password(data['new_password'])
         user.save()
         return Response({'status': 'Senha trocada com sucesso.'})
+
+
+class CarListAdd(APIView):
+    permission_classes = [IsAuthenticated]
+    
+    def get(self, request):
+        pass
+    
+    def post(self, request):
+        data = { 'user': request.user.id, **request.data}
+        car_item = CarSerializer(data=data)
+        if car_item.is_valid():
+            car_item.save()
+            return Response(car_item.data, status=status.HTTP_201_CREATED)
+        return Response(car_item.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class CarRemove(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def delete(self, request, pk):
+        pass
