@@ -10,7 +10,7 @@ from accounts.validations import emailValidate, valueBlankValidate, containsFour
 class CarSerializer(serializers.ModelSerializer):
     class Meta:
         model = Car
-        fields = ['product']
+        fields = ['user', 'product']
 
 
 class UserSerializer(serializers.ModelSerializer):

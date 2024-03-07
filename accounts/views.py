@@ -8,6 +8,8 @@ from django.contrib.auth.models import User
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 from accounts.serializers import UserSerializer, UserCreateSerializer, AuthTokenSerializer, CarSerializer
+from products.serializers import ProductSerializer
+from accounts.models import Car
 
 
 class IsPostMethodOrAuthenticated(BasePermission):
@@ -76,7 +78,15 @@ class CarListAdd(APIView):
     permission_classes = [IsAuthenticated]
     
     def get(self, request):
-        pass
+        items = Car.objects.filter(user=request.user)
+        product = []
+        for item in items:
+            product.append(item.product)
+
+        serializer = ProductSerializer(product, many=True)
+        print(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
     
     def post(self, request):
         data = { 'user': request.user.id, **request.data}
