@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from products.models import Brand, Product
+from products.models import Brand, Offer, Product
 
 
 class BrandSerializer(serializers.ModelSerializer):
@@ -54,3 +54,30 @@ class ProductSerializer(serializers.ModelSerializer):
         print('test')
         print(validated_data['brand'])
         return Product.objects.create(**validated_data)
+    
+
+class OfferSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Offer
+        fields = ['id', 'product', 'discount']
+        read_only_fields = ['id']
+
+    product = ProductSerializer()
+    
+
+class OfferCreateDestroySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Offer
+        fields = ['id', 'product', 'discount']
+
+    def validate_discount(self, value):
+        if value < 0:
+            raise serializers.ValidationError("O desconto não pode ser um numero negativo.")
+        
+        if value == 0:
+            raise serializers.ValidationError("O valor do desconto não pode ser zero.")
+        
+        if value > 100:
+            raise serializers.ValidationError("O desconto não pode ser maior que 100%.")    
+
+        return value

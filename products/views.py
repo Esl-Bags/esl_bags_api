@@ -1,12 +1,13 @@
 from rest_framework.response import Response
-from rest_framework.permissions import BasePermission
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.permissions import BasePermission, IsAdminUser
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, DestroyAPIView
 from rest_framework import status
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
 
-from products.models import Brand, Product
-from products.serializers import BrandSerializer, ProductSerializer
+from products.models import Brand, Offer, Product
+from products.serializers import BrandSerializer, OfferSerializer, OfferCreateDestroySerializer, ProductSerializer
+from esl_bags.utils import MethodSerializerView
 
 
 class IsGetMethodOrAuthenticated(BasePermission):
@@ -16,6 +17,15 @@ class IsGetMethodOrAuthenticated(BasePermission):
         if bool(request.user and request.user.is_authenticated):
             return True
         return False
+    
+class IsGetMethodOrStaffUser(BasePermission):
+    def has_permission(self, request, view):
+        if request.method == 'GET':
+            return True
+        if bool(request.user and request.user.is_authenticated and request.user.is_staff):
+            return True
+        return False
+    
 
 
 # Create your views here.
@@ -111,3 +121,18 @@ class ProductUpdateDelete(RetrieveUpdateDestroyAPIView):
         product.is_active = False
         product.save()
         return Response(status=status.HTTP_204_NO_CONTENT)
+    
+
+class OfferListCreate(MethodSerializerView, ListCreateAPIView):
+    queryset = Offer.objects.all()
+    method_serializer_classes = {
+        ('GET'): OfferSerializer,
+        ('POST'): OfferCreateDestroySerializer
+    }
+    permission_classes = [IsGetMethodOrAuthenticated]
+
+
+class OfferDestory(DestroyAPIView):
+    queryset = Offer.objects.all()
+    serializer_class = OfferSerializer
+    permission_classes = [IsAdminUser]

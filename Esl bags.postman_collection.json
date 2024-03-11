@@ -605,6 +605,93 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "Offer",
+			"item": [
+				{
+					"name": "adicionar oferta",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token 8fd62e9dab14eee3e5f0d11b5b38501dd295a8c3",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"product\": 1, // id do produto\n    \"discount\": 20 // em porcentagem\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8000/product/offer/",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"product",
+								"offer",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listar ofertas",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/product/offer/",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"product",
+								"offer",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "remover ofertas",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token 8fd62e9dab14eee3e5f0d11b5b38501dd295a8c3",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:8000/product/offer/<id da oferta>/",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"product",
+								"offer",
+								"<id da oferta>",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	]
 }
