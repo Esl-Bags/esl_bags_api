@@ -5,8 +5,8 @@ from rest_framework import status
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
 
-from products.models import Brand, Offer, Product
-from products.serializers import BrandSerializer, OfferSerializer, OfferCreateDestroySerializer, ProductSerializer
+from products.models import Brand, Offer, Product, Carousel
+from products.serializers import BrandSerializer, OfferSerializer, OfferCreateDestroySerializer, ProductSerializer,CarouselSerializer
 from esl_bags.utils import MethodSerializerView
 
 
@@ -129,10 +129,22 @@ class OfferListCreate(MethodSerializerView, ListCreateAPIView):
         ('GET'): OfferSerializer,
         ('POST'): OfferCreateDestroySerializer
     }
-    permission_classes = [IsGetMethodOrAuthenticated]
+    permission_classes = [IsGetMethodOrStaffUser]
 
 
-class OfferDestory(DestroyAPIView):
+class OfferDestroy(DestroyAPIView):
     queryset = Offer.objects.all()
     serializer_class = OfferSerializer
+    permission_classes = [IsAdminUser]
+
+
+class CarouselListCreate(ListCreateAPIView):
+    queryset = Carousel.objects.all()
+    serializer_class = CarouselSerializer
+    permission_classes = [IsGetMethodOrStaffUser]
+
+
+class CarouselDestroy(DestroyAPIView):
+    queryset = Carousel.objects.all()
+    serializer_class = CarouselSerializer
     permission_classes = [IsAdminUser]
