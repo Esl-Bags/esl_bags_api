@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from products.models import Brand, Offer, Product
+from products.models import Brand, Offer, Product, Carousel
 
 
 class BrandSerializer(serializers.ModelSerializer):
@@ -51,8 +51,6 @@ class ProductSerializer(serializers.ModelSerializer):
         return attrs
 
     def create(self, validated_data):
-        print('test')
-        print(validated_data['brand'])
         return Product.objects.create(**validated_data)
     
 
@@ -81,3 +79,16 @@ class OfferCreateDestroySerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("O desconto não pode ser maior que 100%.")    
 
         return value
+    
+
+class CarouselSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Carousel
+        fields = ['image']
+
+    def validate(self, attrs):
+        carousel = Carousel.objects.all()
+        if len(carousel) > 8:
+            raise serializers.ValidationError("O número de imagens no carrossel não pode ultrapassar 8.")
+
+        return super().validate(attrs)
