@@ -16,3 +16,8 @@ class Product(models.Model):
     description = models.CharField(max_length=80)
     price = models.FloatField()
     is_active = models.BooleanField(blank=True, default=True)
+
+
+class Offer(models.Model):
+    product = models.OneToOneField('Product', on_delete=models.CASCADE)
+    discount = models.FloatField()
