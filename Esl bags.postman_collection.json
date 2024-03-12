@@ -692,6 +692,94 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "Carousel",
+			"item": [
+				{
+					"name": "adicionar foto ao carrossel",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token 8fd62e9dab14eee3e5f0d11b5b38501dd295a8c3",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "image",
+									"type": "file",
+									"src": "/home/filipe_vilanova/Área de Trabalho/teste.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:8000/product/carousel/",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"product",
+								"carousel",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "pegar carrossel",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/product/carousel/",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"product",
+								"carousel",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "remover foto do carrossel",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token 8fd62e9dab14eee3e5f0d11b5b38501dd295a8c3",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:8000/product/carousel/<id>/",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"product",
+								"carousel",
+								"<id>",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	]
 }

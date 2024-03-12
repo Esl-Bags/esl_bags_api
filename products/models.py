@@ -21,3 +21,6 @@ class Product(models.Model):
 class Offer(models.Model):
     product = models.OneToOneField('Product', on_delete=models.CASCADE)
     discount = models.FloatField()
+
+class Carousel(models.Model):
+    image = models.ImageField(upload_to='media/images/carousel')
