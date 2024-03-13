@@ -12,3 +12,11 @@ EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = config('MAIL_USER')
 EMAIL_HOST_PASSWORD = config('MAIL_PASSWORD')
+
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': config('ADDRESS_DB'),
+    }
+}
