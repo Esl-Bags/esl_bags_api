@@ -17,6 +17,6 @@ EMAIL_HOST_PASSWORD = config('MAIL_PASSWORD')
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': config('ADDRESS_DB'),
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
