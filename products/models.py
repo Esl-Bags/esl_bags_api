@@ -12,7 +12,7 @@ class Brand(models.Model):
 class Product(models.Model):
     name = models.CharField(max_length=40)
     brand = models.ForeignKey('Brand', related_name='products', on_delete=models.CASCADE)
-    photo = models.ImageField(upload_to = 'media/images/products')
+    photo = models.ImageField(upload_to='images/products')
     description = models.CharField(max_length=80)
     price = models.FloatField()
     is_active = models.BooleanField(blank=True, default=True)
@@ -23,4 +23,4 @@ class Offer(models.Model):
     discount = models.FloatField()
 
 class Carousel(models.Model):
-    image = models.ImageField(upload_to='media/images/carousel')
+    image = models.ImageField(upload_to='images/carousel')

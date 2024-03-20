@@ -25,3 +25,7 @@ EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = config('MAIL_USER')
 EMAIL_HOST_PASSWORD = config('MAIL_PASSWORD')
+
+# Root to medias
+MEDIA_URL = 'media/'
+MEDIA_ROOT = '/var/lib/esl_bags/media'
